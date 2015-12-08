@@ -1,0 +1,42 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<style>
+    .checkbox-true {
+        text-decoration: underline;
+        color: gray;
+    }
+</style>
+<script src="~/Scripts/angularSamples.js"></script>
+
+<!--
+    ng ler directivediye geçmektedir
+    burada textboxın değerini txtAd a bağladık. Two way binding ile buradaki değeri istediğimiz an html taglarında da kullanabiliyoruz.
+    textboxa birşey yazıldığı an ekrana gelmektedir
+    -->
+<input type="text" ng-model="txtAd" placeholder="Bişey yaz" /><br />
+Merhaba Angulara Başlayan : <label>{{txtAd}}</label> <br /><br />
+
+
+<script>
+    
+    var app = angular.module('divApp', []);
+
+    app.controller('divController', function ($scope) {
+        $scope.firstName = "Reşit";
+
+        $scope.persons = [{ text: "Murat", isChecked: true }, { text: "Fatma", isChecked: false }];
+    });
+</script>
+<div ng-app="divApp" ng-controller="divController">
+    <label>divdeki ad: {{firstName}}</label><br />
+
+    <ul ng-repeat="person in persons">
+        <li>
+            <input type="checkbox" ng-checked="person.isChecked" ng-model="test" />
+            <span class="checkbox-{{test}}">{{person.text}}</span>
+        </li>
+    </ul>
+</div>
