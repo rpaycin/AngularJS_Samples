@@ -2,7 +2,7 @@
 @{
     ViewBag.Title = "Index";
 }
-
+<!--http://www.w3schools.com/angular/angular_examples.asp-->
 <style>
     .checkbox-true {
         text-decoration: underline;
@@ -16,27 +16,58 @@
     burada textboxın değerini txtAd a bağladık. Two way binding ile buradaki değeri istediğimiz an html taglarında da kullanabiliyoruz.
     textboxa birşey yazıldığı an ekrana gelmektedir
     -->
-<input type="text" ng-model="txtAd" placeholder="Bişey yaz" /><br />
-Merhaba Angulara Başlayan : <label>{{txtAd}}</label> <br /><br />
+
+<div ng-init="txtAd='John'">
+    <p>Name: <input type="text" ng-model="txtAd"></p>
+    <p>Merhaba : {{ txtAd }} {{txtAd | uppercase}}</p>
+    <!--filterlar | ile başlar-->
+</div>
 
 
 <script>
-    
-    var app = angular.module('divApp', []);
+    var app = angular.module('myApp', []);
 
     app.controller('divController', function ($scope) {
         $scope.firstName = "Reşit";
+        $scope.lastName = "Payçın";
+
+        $scope.concatName = function () {
+            return $scope.firstName + " " + $scope.lastName;
+        };
 
         $scope.persons = [{ text: "Murat", isChecked: true }, { text: "Fatma", isChecked: false }];
+
+        $scope.count = 0;
     });
 </script>
-<div ng-app="divApp" ng-controller="divController">
-    <label>divdeki ad: {{firstName}}</label><br />
 
-    <ul ng-repeat="person in persons">
+<!--controller, js deki function gibi-->
+<div ng-controller="divController">
+    <label>divdeki ad: {{firstName+" "+concatName()}}</label><br />
+
+    <ul ng-repeat="person in persons | orderBy:'text'">
         <li>
             <input type="checkbox" ng-checked="person.isChecked" ng-model="test" />
             <span class="checkbox-{{test}}">{{person.text}}</span>
         </li>
     </ul>
+    <button ng-click="count=count+1">Arttır</button>{{count}}
 </div>
+
+<!--jsondan data alma-->
+<div ng-controller="customersCtrl">
+    <ul>
+        <li ng-repeat="x in names">
+            {{ $index + ' => ' + x.Name + ', ' + x.Country }}
+        </li>
+    </ul>
+
+</div>
+
+<script>
+    //app yukarda tanımlı
+app.controller('customersCtrl', function($scope, $http) {
+    $http.get("http://www.w3schools.com/angular/customers.php")
+    .then(function(response) {$scope.names = response.data.records;});
+});
+</script>
